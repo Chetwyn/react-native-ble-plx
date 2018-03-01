@@ -26,7 +26,6 @@ import com.polidea.reactnativeble.errors.BleError;
 import com.polidea.reactnativeble.errors.Error;
 import com.polidea.reactnativeble.errors.ErrorConverter;
 import com.polidea.reactnativeble.exceptions.CannotMonitorCharacteristicException;
-import com.polidea.reactnativeble.utils.Base64Converter;
 import com.polidea.reactnativeble.utils.DisposableMap;
 import com.polidea.reactnativeble.utils.IdGenerator;
 import com.polidea.reactnativeble.utils.LogLevel;
@@ -649,7 +648,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     public void writeCharacteristicForDevice(final String deviceId,
                                              final String serviceUUID,
                                              final String characteristicUUID,
-                                             final String valueBase64,
+                                             final ReadableArray valueArray,
                                              final Boolean response,
                                              final String transactionId,
                                              final Promise promise) {
@@ -662,7 +661,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         writeCharacteristicWithValue(
                 characteristic,
-                valueBase64,
+                valueArray,
                 response,
                 transactionId,
                 promise);
@@ -671,7 +670,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void writeCharacteristicForService(final int serviceIdentifier,
                                               final String characteristicUUID,
-                                              final String valueBase64,
+                                              final ReadableArray valueArray,
                                               final Boolean response,
                                               final String transactionId,
                                               final Promise promise) {
@@ -683,7 +682,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         writeCharacteristicWithValue(
                 characteristic,
-                valueBase64,
+                valueArray,
                 response,
                 transactionId,
                 promise);
@@ -691,7 +690,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void writeCharacteristic(final int characteristicIdentifier,
-                                    final String valueBase64,
+                                    final ReadableArray valueArray,
                                     final Boolean response,
                                     final String transactionId,
                                     final Promise promise) {
@@ -702,24 +701,19 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         writeCharacteristicWithValue(
                 characteristic,
-                valueBase64,
+                valueArray,
                 response,
                 transactionId,
                 promise);
     }
 
     private void writeCharacteristicWithValue(final Characteristic characteristic,
-                                              final String valueBase64,
+                                              final ReadableArray valueArray,
                                               final Boolean response,
                                               final String transactionId,
                                               final Promise promise) {
-        final byte[] value;
-        try {
-            value = Base64Converter.decode(valueBase64);
-        } catch (Throwable e) {
-            BleError.invalidWriteDataForCharacteristic(valueBase64,
-                    UUIDConverter.fromUUID(characteristic.getNativeCharacteristic().getUuid()))
-                    .reject(promise);
+        final byte[] value = ReadableArrayConverter.toByteArray(valueArray);
+        if (value == null) {
             return;
         }
 
@@ -1111,7 +1105,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     }
 
     private void cleanServicesAndCharacteristicsForDevice(@NonNull Device device) {
-        for (int i = discoveredServices.size() - 1; i >=0; i--) {
+        for (int i = discoveredServices.size() - 1; i >= 0; i--) {
             int key = discoveredServices.keyAt(i);
             Service service = discoveredServices.get(key);
 
@@ -1119,7 +1113,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                 discoveredServices.remove(key);
             }
         }
-        for (int i = discoveredCharacteristics.size() - 1; i >=0; i--) {
+        for (int i = discoveredCharacteristics.size() - 1; i >= 0; i--) {
             int key = discoveredCharacteristics.keyAt(i);
             Characteristic characteristic = discoveredCharacteristics.get(key);
 
