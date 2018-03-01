@@ -13,7 +13,6 @@ import type {
   Identifier,
   UUID,
   TransactionId,
-  Base64,
   ScanOptions,
   ConnectionOptions,
   BleManagerOptions
@@ -549,7 +548,7 @@ export class BleManager {
    * @param {DeviceId} deviceIdentifier {@link Device} identifier.
    * @param {UUID} serviceUUID {@link Service} UUID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
-   * @param {Base64} base64Value Value in Base64 format.
+   * @param {Int8Array} valueInt8Array Value in Int8Array format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified
@@ -559,7 +558,7 @@ export class BleManager {
     deviceIdentifier: DeviceId,
     serviceUUID: UUID,
     characteristicUUID: UUID,
-    base64Value: Base64,
+    valueInt8Array: Int8Array,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
@@ -570,7 +569,7 @@ export class BleManager {
         deviceIdentifier,
         serviceUUID,
         characteristicUUID,
-        base64Value,
+        valueInt8Array,
         true,
         transactionId
       )
@@ -583,7 +582,7 @@ export class BleManager {
    *
    * @param {Identifier} serviceIdentifier {@link Service} ID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
-   * @param {Base64} base64Value Value in Base64 format.
+   * @param {Int8Array} valueInt8Array Value in Int8Array format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified
@@ -593,14 +592,14 @@ export class BleManager {
   async _writeCharacteristicWithResponseForService(
     serviceIdentifier: Identifier,
     characteristicUUID: UUID,
-    base64Value: Base64,
+    valueInt8Array: Int8Array,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
     const nativeCharacteristic = await this._callPromise(
-      BleModule.writeCharacteristicForService(serviceIdentifier, characteristicUUID, base64Value, true, transactionId)
+      BleModule.writeCharacteristicForService(serviceIdentifier, characteristicUUID, valueInt8Array, true, transactionId)
     )
     return new Characteristic(nativeCharacteristic, this)
   }
@@ -609,7 +608,7 @@ export class BleManager {
    * Write {@link Characteristic} value with response.
    *
    * @param {Identifier} characteristicIdentifier {@link Characteristic} ID.
-   * @param {Base64} base64Value Value in Base64 format.
+   * @param {Int8Array} valueInt8Array Value in Int8Array format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID.
@@ -618,14 +617,14 @@ export class BleManager {
    */
   async _writeCharacteristicWithResponse(
     characteristicIdentifier: Identifier,
-    base64Value: Base64,
+    valueInt8Array: Int8Array,
     transactionId: ?TransactionId
   ) {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
     const nativeCharacteristic = await this._callPromise(
-      BleModule.writeCharacteristic(characteristicIdentifier, base64Value, true, transactionId)
+      BleModule.writeCharacteristic(characteristicIdentifier, valueInt8Array, true, transactionId)
     )
     return new Characteristic(nativeCharacteristic, this)
   }
@@ -636,7 +635,7 @@ export class BleManager {
    * @param {DeviceId} deviceIdentifier {@link Device} identifier.
    * @param {UUID} serviceUUID {@link Service} UUID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
-   * @param {Base64} base64Value Value in Base64 format.
+   * @param {Int8Array} valueInt8Array Value in Int8Array format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified
@@ -646,7 +645,7 @@ export class BleManager {
     deviceIdentifier: DeviceId,
     serviceUUID: UUID,
     characteristicUUID: UUID,
-    base64Value: Base64,
+    valueInt8Array: Int8Array,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
@@ -657,7 +656,7 @@ export class BleManager {
         deviceIdentifier,
         serviceUUID,
         characteristicUUID,
-        base64Value,
+        valueInt8Array,
         false,
         transactionId
       )
@@ -670,7 +669,7 @@ export class BleManager {
    *
    * @param {Identifier} serviceIdentifier {@link Service} ID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
-   * @param {Base64} base64Value Value in Base64 format.
+   * @param {Int8Array} valueInt8Array Value in Int8Array format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified
@@ -680,14 +679,14 @@ export class BleManager {
   async _writeCharacteristicWithoutResponseForService(
     serviceIdentifier: Identifier,
     characteristicUUID: UUID,
-    base64Value: Base64,
+    valueInt8Array: Int8Array,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
     const nativeCharacteristic = await this._callPromise(
-      BleModule.writeCharacteristicForService(serviceIdentifier, characteristicUUID, base64Value, false, transactionId)
+      BleModule.writeCharacteristicForService(serviceIdentifier, characteristicUUID, valueInt8Array, false, transactionId)
     )
     return new Characteristic(nativeCharacteristic, this)
   }
@@ -696,7 +695,7 @@ export class BleManager {
    * Write {@link Characteristic} value without response.
    *
    * @param {Identifier} characteristicIdentifier {@link Characteristic} UUID.
-   * @param {Base64} base64Value Value in Base64 format.
+   * @param {Int8Array} valueInt8Array Value in Int8Array format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID.
@@ -705,14 +704,14 @@ export class BleManager {
    */
   async _writeCharacteristicWithoutResponse(
     characteristicIdentifier: Identifier,
-    base64Value: Base64,
+    valueInt8Array: Int8Array,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
     const nativeCharacteristic = await this._callPromise(
-      BleModule.writeCharacteristic(characteristicIdentifier, base64Value, false, transactionId)
+      BleModule.writeCharacteristic(characteristicIdentifier, valueInt8Array, false, transactionId)
     )
     return new Characteristic(nativeCharacteristic, this)
   }

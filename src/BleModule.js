@@ -398,7 +398,7 @@ export interface BleModuleInterface {
    * @param {DeviceId} deviceIdentifier Connected device identifier
    * @param {UUID} serviceUUID Service UUID
    * @param {UUID} characteristicUUID Characteristic UUID
-   * @param {Base64} valueBase64 Value to be set coded in Base64
+   * @param {Int8Array} valueInt8Array Value to be set coded in Int8Array
    * @param {boolean} withResponse True if write should be with response
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<NativeCharacteristic>} Characteristic which saved passed value
@@ -408,7 +408,7 @@ export interface BleModuleInterface {
     deviceIdentifier: DeviceId,
     serviceUUID: UUID,
     characteristicUUID: UUID,
-    valueBase64: Base64,
+    valueInt8Array: Int8Array,
     withResponse: boolean,
     transactionId: TransactionId
   ): Promise<NativeCharacteristic>;
@@ -418,7 +418,7 @@ export interface BleModuleInterface {
    *
    * @param {Identifier} serviceIdentifier Service ID
    * @param {UUID} characteristicUUID Characteristic UUID
-   * @param {Base64} valueBase64 Value to be set coded in Base64
+   * @param {Int8Array} valueInt8Array Value to be set coded in Int8Array
    * @param {boolean} withResponse True if write should be with response
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<NativeCharacteristic>} Characteristic which saved passed value
@@ -427,7 +427,7 @@ export interface BleModuleInterface {
   writeCharacteristicForService(
     serviceIdentifier: Identifier,
     characteristicUUID: UUID,
-    valueBase64: Base64,
+    valueInt8Array: Int8Array,
     withResponse: boolean,
     transactionId: TransactionId
   ): Promise<NativeCharacteristic>;
@@ -436,7 +436,7 @@ export interface BleModuleInterface {
    * Write value to characteristic.
    *
    * @param {Identifier} characteristicIdentifier Characteristic ID
-   * @param {Base64} valueBase64 Value to be set coded in Base64
+   * @param {Int8Array} valueInt8Array Value to be set coded in Int8Array
    * @param {boolean} withResponse True if write should be with response
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<NativeCharacteristic>} Characteristic which saved passed value
@@ -444,7 +444,7 @@ export interface BleModuleInterface {
    */
   writeCharacteristic(
     characteristicIdentifier: Identifier,
-    valueBase64: Base64,
+    valueInt8Array: Int8Array,
     withResponse: boolean,
     transactionId: TransactionId
   ): Promise<NativeCharacteristic>;
