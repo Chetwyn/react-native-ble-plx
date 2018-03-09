@@ -579,14 +579,16 @@ public class BleClientManager : NSObject {
     public func writeCharacteristicForDevice(  _ deviceIdentifier: String,
                                                       serviceUUID: String,
                                                characteristicUUID: String,
-                                                      valueBase64: String,
+                                                       valueArray: Array<Int8>,
                                                          response: Bool,
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
-        guard let value = valueBase64.fromBase64 else {
-            return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
+        var data:[UInt8] = []
+        for item in valueArray {
+            data.append(UInt8.init(item))
         }
+        let value = Data.init(data)
 
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: serviceUUID,
@@ -601,14 +603,16 @@ public class BleClientManager : NSObject {
     @objc
     public func writeCharacteristicForService(  _ serviceIdentifier: Double,
                                                  characteristicUUID: String,
-                                                        valueBase64: String,
+                                                         valueArray: Array<Int8>,
                                                            response: Bool,
                                                       transactionId: String,
                                                             resolve: @escaping Resolve,
                                                              reject: @escaping Reject) {
-        guard let value = valueBase64.fromBase64 else {
-            return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
+        var data:[UInt8] = []
+        for item in valueArray {
+            data.append(UInt8.init(item))
         }
+        let value = Data.init(data)
 
         let observable = getCharacteristicForService(serviceIdentifier,
                                                      characteristicUUID: characteristicUUID)
@@ -622,15 +626,16 @@ public class BleClientManager : NSObject {
 
     @objc
     public func writeCharacteristic(  _ characteristicIdentifier: Double,
-                                                     valueBase64: String,
+                                                      valueArray: Array<Int8>,
                                                         response: Bool,
                                                    transactionId: String,
                                                          resolve: @escaping Resolve,
                                                           reject: @escaping Reject) {
-        guard let value = valueBase64.fromBase64 else {
-            return BleError.invalidWriteDataForCharacteristic(characteristicIdentifier, data: valueBase64)
-                .callReject(reject)
+        var data:[UInt8] = []
+        for item in valueArray {
+            data.append(UInt8.init(item))
         }
+        let value = Data.init(data)
 
         safeWriteCharacteristicForDevice(getCharacteristic(characteristicIdentifier),
                                          value: value,
