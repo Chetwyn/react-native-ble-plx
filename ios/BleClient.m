@@ -198,7 +198,7 @@ RCT_EXPORT_METHOD(readCharacteristic:(nonnull NSNumber*)characteristicIdentifier
 RCT_EXPORT_METHOD(writeCharacteristicForDevice:(NSString*)deviceIdentifier
                                    serviceUUID:(NSString*)serviceUUID
                             characteristicUUID:(NSString*)characteristicUUID
-                                   valueBase64:(NSString*)valueBase64
+                                    valueArray:(NSArray*)valueArray
                                   withResponse:(BOOL)response
                                  transactionId:(NSString*)transactionId
                                       resolver:(RCTPromiseResolveBlock)resolve
@@ -206,7 +206,7 @@ RCT_EXPORT_METHOD(writeCharacteristicForDevice:(NSString*)deviceIdentifier
     [_manager writeCharacteristicForDevice:deviceIdentifier
                                serviceUUID:serviceUUID
                         characteristicUUID:characteristicUUID
-                               valueBase64:valueBase64
+                                valueArray:valueArray
                                   response:response
                              transactionId:transactionId
                                    resolve:resolve
@@ -215,14 +215,14 @@ RCT_EXPORT_METHOD(writeCharacteristicForDevice:(NSString*)deviceIdentifier
 
 RCT_EXPORT_METHOD(writeCharacteristicForService:(nonnull NSNumber*)serviceIdentifier
                              characteristicUUID:(NSString*)characteristicUUID
-                                    valueBase64:(NSString*)valueBase64
+                                     valueArray:(NSArray*)valueArray
                                    withResponse:(BOOL)response
                                   transactionId:(NSString*)transactionId
                                        resolver:(RCTPromiseResolveBlock)resolve
                                        rejecter:(RCTPromiseRejectBlock)reject) {
     [_manager writeCharacteristicForService:serviceIdentifier.doubleValue
                          characteristicUUID:characteristicUUID
-                                valueBase64:valueBase64
+                                 valueArray:valueArray
                                    response:response
                               transactionId:transactionId
                                     resolve:resolve
@@ -230,13 +230,13 @@ RCT_EXPORT_METHOD(writeCharacteristicForService:(nonnull NSNumber*)serviceIdenti
 }
 
 RCT_EXPORT_METHOD(writeCharacteristic:(nonnull NSNumber*)characteristicIdentifier
-                          valueBase64:(NSString*)valueBase64
+                           valueArray:(NSArray*)valueArray
                          withResponse:(BOOL)response
                         transactionId:(NSString*)transactionId
                              resolver:(RCTPromiseResolveBlock)resolve
                              rejecter:(RCTPromiseRejectBlock)reject) {
     [_manager writeCharacteristic:characteristicIdentifier.doubleValue
-                      valueBase64:valueBase64
+                       valueArray:valueArray
                          response:response
                     transactionId:transactionId
                           resolve:resolve
