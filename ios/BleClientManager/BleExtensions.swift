@@ -125,7 +125,7 @@ extension Characteristic {
             "isNotifiable": properties.contains(.notify),
             "isNotifying": isNotifying,
             "isIndicatable": properties.contains(.indicate),
-            "value": valueBase64 as Any
+            "value": valueArray as Any
         ]
     }
 }
@@ -171,5 +171,17 @@ extension BluetoothState {
 extension Characteristic {
     var valueBase64: String? {
         return value?.base64
+    }
+
+    var valueArray: Array<Int8>? {
+        guard let value = value else {
+            return nil
+        }
+        let bytes: [UInt8] = [UInt8](value)
+        var valueArray: [Int8] = []
+        for v in bytes {
+            valueArray.append(Int8(v))
+        }
+        return valueArray
     }
 }
