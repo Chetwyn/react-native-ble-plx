@@ -586,7 +586,8 @@ public class BleClientManager : NSObject {
                                                            reject: @escaping Reject) {
         var data:[UInt8] = []
         for item in valueArray {
-            data.append(UInt8.init(item))
+            let uIntItem = UInt8(item < 0 ? Int16(item) + 256 : Int16(item))
+            data.append(uIntItem)
         }
         let value = Data.init(data)
 

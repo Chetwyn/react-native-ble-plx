@@ -180,7 +180,9 @@ extension Characteristic {
         let bytes: [UInt8] = [UInt8](value)
         var valueArray: [Int8] = []
         for v in bytes {
-            valueArray.append(Int8(v))
+            
+            let intV = Int8(v > 127 ? Int16(v) - 256 : Int16(v))
+            valueArray.append(intV)
         }
         return valueArray
     }
